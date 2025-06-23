@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Cadastro de Cliente</title>
+    <style>
+        /* Estilos Base e Reset */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+            box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada e moderna */
+            max-width: 750px;
+            margin: 20px auto;
+            box-sizing: border-box;
+            flex-grow: 1;
+            transition: transform 0.3s ease-in-out; /* Transição para um leve efeito ao interagir */
+        }
+
+        .container:focus-within {
+            transform: translateY(-3px); /* Efeito de "levantar" ao focar em um campo */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.2em; /* Maior para destaque */
+            font-weight: 700; /* Mais encorpado */
+            letter-spacing: -0.5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444; /* Cor mais escura para melhor contraste */
+            font-size: 0.98em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 18px;
+            border: 1px solid #cdd;
+            border-radius: 8px; /* Mais arredondado */
+            box-sizing: border-box;
+            font-size: 1.05em; /* Ligeiramente maior */
+            color: #333;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2); /* Sombra mais suave e espalhada */
+            outline: none;
+            background-color: #f9fcff; /* Fundo levemente azulado ao focar */
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.3);
+            vertical-align: middle;
+            accent-color: #007bff; /* Cor do checkbox/radio no tema */
+        }
+
+        .checkbox-group label {
+            display: inline-flex;
+            align-items: center;
+            font-weight: normal;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .message, .footer-message {
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            border-radius: 10px; /* Mais arredondado */
+            font-size: 0.9em;
+            line-height: 1.5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Sombra mais perceptível */
+            transition: all 0.3s ease; /* Transição para efeitos */
+        }
+        .message {
+            background-color: #e7f3fe;
+            border-left: 8px solid #2196F3; /* Borda mais grossa */
+            color: #333;
+        }
+        .footer-message {
+            background-color: #fff3cd;
+            border-left: 8px solid #ffc107;
+            color: #333;
+            margin-top: 25px;
+        }
+
+        #contractDetails, #migrationDetails {
+            display: none;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color: #fefefe;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.4s ease-out; /* Transição suave ao aparecer */
+            overflow: hidden; /* Garante que o conteúdo não vaze durante a transição */
+        }
+
+        /* Estilos para a seção de relatório e botões de ação */
+        #actionSection {
+            margin-top: 40px;
+            border-top: 2px dashed #d0d0d0; /* Borda tracejada moderna */
+            padding-top: 30px;
+            text-align: center;
+        }
+        #actionSection h3 {
+            color: #333;
+            font-size: 1.6em; /* Mais destaque */
+            margin-bottom: 20px;
+        }
+        #reportOutput {
+            white-space: pre-wrap;
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px; /* Mais arredondado */
+            border: 1px solid #e0e0e0;
+            font-family: 'Roboto Mono', monospace;
+            color: #333;
+            max-height: 450px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 0.95em;
+            line-height: 1.6; /* Mais espaçamento para leitura */
+            word-break: break-word;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Estilo para quando o relatório estiver vazio */
+        #reportOutput.empty {
+            background-color: #fdfdfd;
+            border: 1px dashed #ccc;
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 40px 20px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            animation: pulseEmpty 1.5s infinite alternate; /* Animação sutil */
+        }
+
+        @keyframes pulseEmpty {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .action-buttons button {
+            flex: 1;
+            min-width: 180px;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px; /* Mais arredondado */
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600; /* Mais negrito */
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        /* Cores específicas para os botões de ação */
+        #sendToWhatsAppButton {
+            background-color: #25d366; /* Verde WhatsApp */
+            color: white;
+        }
+        #sendToWhatsAppButton:hover {
+            background-color: #1da851;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        #copyReportButton {
+            background-color: #007bff; /* Azul padrão */
+            color: white;
+        }
+        #copyReportButton:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        #clearFormButton {
+            background-color: #dc3545; /* Vermelho para limpar */
+            color: white;
+        }
+        #clearFormButton:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+        }
+
+
+        /* Media Queries para responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 15px auto;
+            }
+            h2 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+            input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea {
+                padding: 10px 12px;
+                font-size: 1em;
+            }
+            .message, .footer-message {
+                font-size: 0.88em;
+                padding: 12px 15px;
+            }
+            #reportOutput {
+                font-size: 0.85em;
+                padding: 15px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .action-buttons button {
+                min-width: unset;
+                width: 100%;
+                padding: 12px 15px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                margin: 10px auto;
+                padding: 15px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            label {
+                font-size: 0.9em;
+            }
+            .checkbox-group label {
+                font-size: 0.88em;
+            }
+            .message, .footer-message {
+                font-size: 0.8em;
+            }
+            #reportOutput {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Formulário de Cadastro de Cliente</h2>
+        <div class="message">
+            <p><strong>Atenção:</strong> Todos os cadastros terão um prazo mínimo de 24 horas para serem feitos e o contrato enviado.</p>
+        </div>
+
+        <form id="customerForm">
+            <label for="nomeFantasia">Nome Fantasia:</label>
+            <input type="text" id="nomeFantasia" name="nomeFantasia" required>
+
+            <label for="nomeResponsavel">Nome do Responsável da Empresa:</label>
+            <input type="text" id="nomeResponsavel" name="nomeResponsavel" required>
+
+            <label for="celular">Celular:</label>
+            <input type="tel" id="celular" name="celular" placeholder="(XX) XXXXX-XXXX" required inputmode="numeric">
+
+            <label for="telefoneCobranca">Telefone de Cobrança:</label>
+            <input type="tel" id="telefoneCobranca" name="telefoneCobranca" placeholder="(XX) XXXXX-XXXX" required inputmode="numeric">
+
+            <label for="emailCobranca">E-mail de Cobrança:</label>
+            <input type="email" id="emailCobranca" name="emailCobranca" required>
+
+            <label for="telefoneSuporte">Telefone de Suporte:</label>
+            <input type="tel" id="telefoneSuporte" name="telefoneSuporte" placeholder="(XX) XXXXX-XXXX" required inputmode="numeric">
+
+            <label for="emailEmpresa">E-mail da Empresa:</label>
+            <input type="email" id="emailEmpresa" name="emailEmpresa" required>
+
+            <label for="cnpj">CNPJ:</label>
+            <input type="text" id="cnpj" name="cnpj" placeholder="XX.XXX.XXX/XXXX-XX" required inputmode="numeric">
+
+            <label for="contabilidade">Contabilidade:</label>
+            <input type="text" id="contabilidade" name="contabilidade" required>
+
+            <label for="regimeEmpresa">Regime da Empresa:</label>
+            <select id="regimeEmpresa" name="regimeEmpresa" required>
+                <option value="">Selecione</option>
+                <option value="Simples Nacional">Simples Nacional</option>
+                <option value="Lucro Presumido">Lucro Presumido</option>
+                <option value="Lucro Real">Lucro Real</option>
+                <option value="MEI">MEI</option>
+            </select>
+
+            <label for="valorContrato">Valor do Contrato:</label>
+            <input type="text" id="valorContrato" name="valorContrato" required>
+
+            <label for="tipoContrato">Tipo de Contrato:</label>
+            <select id="tipoContrato" name="tipoContrato" required>
+                <option value="">Selecione</option>
+                <option value="Anual">Anual</option>
+                <option value="Mensal">Mensal</option>
+            </select>
+
+            <div id="contractDetails">
+                <label for="formaPagamento">Forma de Pagamento (Anual):</label>
+                <select id="formaPagamento" name="formaPagamento">
+                    <option value="">Selecione</option>
+                    <option value="Boleto">Boleto</option>
+                    <option value="Cartao">Cartão</option>
+                    <option value="Pix">Pix</option>
+                </select>
+
+                <label for="diaVencimento">Dia do Vencimento:</label>
+                <input type="number" id="diaVencimento" name="diaVencimento" min="1" max="31">
+            
+                <div id="installments" style="display: none;">
+                    <label for="parcelasCartao">Quantas Parcelas (máximo 5x):</label>
+                    <input type="number" id="parcelasCartao" name="parcelasCartao" min="1" max="5">
+                </div>
+            </div>
+
+            <label>Tipo de Sistema:</label>
+            <div class="checkbox-group">
+                <input type="radio" id="fiscalSimples" name="tipoSistema" value="Fiscal Simples" required>
+                <label for="fiscalSimples">Fiscal Simples</label><br>
+                <input type="radio" id="fiscalNormal" name="tipoSistema" value="Fiscal Normal">
+                <label for="fiscalNormal">Fiscal Normal</label><br>
+                <input type="radio" id="fiscalMEI" name="tipoSistema" value="Fiscal MEI">
+                <label for="fiscalMEI">Fiscal MEI</label><br>
+                <input type="radio" id="gerencial" name="tipoSistema" value="Gerencial">
+                <label for="gerencial">Gerencial</label>
+            </div>
+
+            <label>Módulos Adicionais:</label>
+            <div class="checkbox-group">
+                <input type="checkbox" id="nfce" name="modulos" value="NFC-e">
+                <label for="nfce">NFC-e</label><br>
+                <input type="checkbox" id="nfe" name="modulos" value="NF-e">
+                <label for="nfe">NF-e</label><br>
+                <input type="checkbox" id="nfse" name="modulos" value="NFS-e">
+                <label for="nfse">NFS-e</label><br>
+                <input type="checkbox" id="sintegra" name="modulos" value="Sintegra">
+                <label for="sintegra">Sintegra</label><br>
+                <input type="checkbox" id="spedEtiqueta" name="modulos" value="SPED Etiqueta">
+                <label for="spedEtiqueta">SPED Etiqueta</label><br>
+                <input type="checkbox" id="backupOnline" name="modulos" value="Backup Online">
+                <label for="backupOnline">Backup Online</label><br>
+                <input type="checkbox" id="pedidoVendas" name="modulos" value="Pedido Vendas">
+                <label for="pedidoVendas">Pedido Vendas</label><br>
+                <input type="checkbox" id="financeiro" name="modulos" value="Financeiro">
+                <label for="financeiro">Financeiro</label><br>
+                <input type="checkbox" id="orcamento" name="modulos" value="Orçamento">
+                <label for="orcamento">Orçamento</label>
+            </div>
+
+            <label for="migracao">Haverá Migração?</label>
+            <select id="migracao" name="migracao" required>
+                <option value="">Selecione</option>
+                <option value="Sim">Sim</option>
+                <option value="Nao">Não</option>
+            </select>
+
+            <div id="migrationDetails">
+                <label for="dadosMigracao">Detalhes da Migração:</label>
+                <textarea id="dadosMigracao" name="dadosMigracao" rows="4" placeholder="Descreva os dados a serem migrados, de qual sistema, etc."></textarea>
+            </div>
+
+            <label for="observacao">Observação:</label>
+            <textarea id="observacao" name="observacao" rows="4"></textarea>
+            
+        </form>
+
+        <div id="actionSection">
+            <h3>Relatório Gerado:</h3>
+            <div id="reportOutput">Preencha o formulário para gerar o relatório...</div>
+            <div class="action-buttons">
+                <button type="button" id="sendToWhatsAppButton" onclick="sendToWhatsApp()">Enviar para WhatsApp</button>
+                <button type="button" id="copyReportButton" onclick="copyReportToClipboard()">Copiar Relatório</button>
+                <button type="button" id="clearFormButton" onclick="clearFormAndReport()">Limpar Formulário</button>
+            </div>
+        </div>
+
+        <div class="footer-message">
+            <p><strong>* Observação:</strong> Observem atentamente todos os requisitos para preenchimento do contrato. A falta de qualquer um deles impedirá o cadastramento do mesmo e a liberação do contrato e licença.</p>
+        </div>
+    </div>
+
+    <script>
+        // Funções de Máscara
+        function maskPhone(event) {
+            let value = event.target.value.replace(/\D/g, '');
+            let maskedValue = '';
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            if (value.length > 10) {
+                maskedValue = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}`;
+            } else if (value.length > 6) {
+                maskedValue = `(${value.substring(0, 2)}) ${value.substring(2, 6)}-${value.substring(6, 10)}`;
+            } else if (value.length > 2) {
+                maskedValue = `(${value.substring(0, 2)}) ${value.substring(2, 6)}`;
+            } else if (value.length > 0) {
+                maskedValue = `(${value.substring(0, 2)}`;
+            }
+            event.target.value = maskedValue;
+            updateReport();
+        }
+
+        function maskCnpj(event) {
+            let value = event.target.value.replace(/\D/g, '');
+            let maskedValue = '';
+            if (value.length > 14) {
+                value = value.substring(0, 14);
+            }
+            if (value.length > 12) {
+                maskedValue = `${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8, 12)}-${value.substring(12, 14)}`;
+            } else if (value.length > 8) {
+                maskedValue = `${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}/${value.substring(8, 12)}`;
+            } else if (value.length > 5) {
+                maskedValue = `${value.substring(0, 2)}.${value.substring(2, 5)}.${value.substring(5, 8)}`;
+            } else if (value.length > 2) {
+                maskedValue = `${value.substring(0, 2)}.${value.substring(2, 5)}`;
+            } else if (value.length > 0) {
+                maskedValue = value.substring(0, 2);
+            }
+            event.target.value = maskedValue;
+            updateReport();
+        }
+
+        // Funções para alternar visibilidade de detalhes
+        function toggleContractDetails() {
+            const tipoContrato = document.getElementById('tipoContrato').value;
+            const contractDetails = document.getElementById('contractDetails');
+            if (tipoContrato === 'Anual') {
+                contractDetails.style.display = 'block';
+            } else {
+                contractDetails.style.display = 'none';
+                document.getElementById('formaPagamento').value = '';
+                document.getElementById('diaVencimento').value = '';
+                document.getElementById('installments').style.display = 'none';
+                document.getElementById('parcelasCartao').value = '';
+            }
+        }
+
+        function togglePaymentInstallments() {
+            const formaPagamento = document.getElementById('formaPagamento').value;
+            const installments = document.getElementById('installments');
+            if (formaPagamento === 'Cartao') {
+                installments.style.display = 'block';
+            } else {
+                installments.style.display = 'none';
+                document.getElementById('parcelasCartao').value = '';
+            }
+        }
+
+        function toggleMigrationDetails() {
+            const migracao = document.getElementById('migracao').value;
+            const migrationDetails = document.getElementById('migrationDetails');
+            if (migracao === 'Sim') {
+                migrationDetails.style.display = 'block';
+            } else {
+                migrationDetails.style.display = 'none';
+                document.getElementById('dadosMigracao').value = '';
+            }
+        }
+
+        // Função para coletar dados do formulário
+        function collectFormData() {
+            const form = document.getElementById('customerForm');
+            const formData = {};
+            Array.from(form.elements).forEach(element => {
+                if (element.name && element.type !== 'submit' && element.type !== 'button') {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+                            formData[element.name] = element.value;
+                        }
+                    } else if (element.type === 'checkbox') {
+                        if (!formData[element.name]) {
+                            formData[element.name] = [];
+                        }
+                        if (element.checked) {
+                            formData[element.name].push(element.value);
+                        }
+                    } else {
+                        formData[element.name] = element.value;
+                    }
+                }
+            });
+            return formData;
+        }
+
+        // Função para gerar o texto completo do relatório/mensagem
+        function generateMessageText(formData) {
+            let message = "Dados do Cadastro de Cliente:\n\n";
+
+            message += `Nome Fantasia: ${formData.nomeFantasia || 'Não preenchido'}\n`;
+            message += `Nome do Responsável: ${formData.nomeResponsavel || 'Não preenchido'}\n`;
+            message += `Celular: ${formData.celular || 'Não preenchido'}\n`;
+            message += `Telefone de Cobrança: ${formData.telefoneCobranca || 'Não preenchido'}\n`;
+            message += `E-mail de Cobrança: ${formData.emailCobranca || 'Não preenchido'}\n`;
+            message += `Telefone de Suporte: ${formData.telefoneSuporte || 'Não preenchido'}\n`;
+            message += `E-mail da Empresa: ${formData.emailEmpresa || 'Não preenchido'}\n`;
+            message += `CNPJ: ${formData.cnpj || 'Não preenchido'}\n`;
+            message += `Contabilidade: ${formData.contabilidade || 'Não preenchido'}\n`;
+            message += `Regime da Empresa: ${formData.regimeEmpresa || 'Não preenchido'}\n`;
+            message += `Valor do Contrato: ${formData.valorContrato || 'Não preenchido'}\n`;
+            message += `Tipo de Contrato: ${formData.tipoContrato || 'Não preenchido'}\n`;
+
+            if (formData.tipoContrato === 'Anual') {
+                message += `Forma de Pagamento (Anual): ${formData.formaPagamento || 'Não preenchido'}\n`;
+                message += `Dia do Vencimento: ${formData.diaVencimento || 'Não preenchido'}\n`;
+                if (formData.formaPagamento === 'Cartao') {
+                    message += `Parcelas no Cartão: ${formData.parcelasCartao || 'Não preenchido'}x\n`;
+                }
+            }
+
+            message += `Tipo de Sistema: ${formData.tipoSistema || 'Não selecionado'}\n`;
+
+            const modulosSelecionados = formData.modulos || [];
+            if (modulosSelecionados.length > 0) {
+                message += `Módulos Adicionais: ${modulosSelecionados.join(', ')}\n`;
+            } else {
+                message += `Módulos Adicionais: Nenhum\n`;
+            }
+
+            message += `Haverá Migração: ${formData.migracao || 'Não preenchido'}\n`;
+            if (formData.migracao === 'Sim' && formData.dadosMigracao) {
+                message += `Detalhes da Migração: ${formData.dadosMigracao}\n`;
+            }
+
+            message += `Observação: ${formData.observacao || 'Nenhuma'}\n\n`;
+
+            message += "*Observação:* Observem atentamente todos os requisitos para preenchimento do contrato. A falta de qualquer um deles impedirá o cadastramento do mesmo e a liberação do contrato e licença.";
+            
+            return message;
+        }
+
+        // Função principal: Atualiza o relatório em tempo real
+        function updateReport() {
+            const formData = collectFormData();
+            const reportText = generateMessageText(formData);
+            const reportOutput = document.getElementById('reportOutput');
+            
+            reportOutput.innerText = reportText;
+            
+            // Adiciona/Remove classe 'empty' para estilo visual de relatório vazio
+            const isReportEmpty = Object.values(formData).every(value => 
+                (Array.isArray(value) && value.length === 0) || (typeof value === 'string' && value.trim() === '') || value === undefined
+            );
+
+            if (isReportEmpty && !reportOutput.innerText.includes('Dados do Cadastro de Cliente:\n\nNome Fantasia: Não preenchido')) { // Checa se o relatório está realmente vazio de conteúdo relevante
+                 reportOutput.innerText = 'Preencha o formulário para gerar o relatório...';
+                 reportOutput.classList.add('empty');
+            } else {
+                reportOutput.classList.remove('empty');
+            }
+            
+            localStorage.setItem('clienteData', JSON.stringify(formData));
+            localStorage.setItem('clienteReport', reportText);
+
+            // Garante que as seções condicionais sejam exibidas/ocultadas
+            toggleContractDetails();
+            togglePaymentInstallments();
+            toggleMigrationDetails();
+        }
+
+        // Funções para enviar para WhatsApp e Copiar Relatório
+        function sendToWhatsApp() {
+            const reportText = localStorage.getItem('clienteReport');
+            const form = document.getElementById('customerForm');
+
+            if (!form.checkValidity()) {
+                alert('Por favor, preencha todos os campos obrigatórios corretamente antes de enviar para o WhatsApp.');
+                form.reportValidity();
+                return;
+            }
+
+            if (reportText && reportText.trim() !== 'Preencha o formulário para gerar o relatório...') { // Verifica se há conteúdo real
+                window.location.href = `https://wa.me/?text=${encodeURIComponent(reportText)}`;
+            } else {
+                alert('Nenhum dado válido no relatório para enviar. Por favor, preencha o formulário.');
+            }
+        }
+
+        function copyReportToClipboard() {
+            const reportText = localStorage.getItem('clienteReport');
+            const form = document.getElementById('customerForm');
+
+            if (!form.checkValidity()) {
+                alert('Por favor, preencha todos os campos obrigatórios corretamente antes de copiar o relatório.');
+                form.reportValidity();
+                return;
+            }
+
+            if (reportText && reportText.trim() !== 'Preencha o formulário para gerar o relatório...') { // Verifica se há conteúdo real
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(reportText).then(() => {
+                        alert('Relatório copiado para a área de transferência!');
+                    }).catch(err => {
+                        console.error('Erro ao copiar o relatório com Clipboard API: ', err);
+                        fallbackCopyTextToClipboard(reportText);
+                    });
+                } else {
+                    fallbackCopyTextToClipboard(reportText);
+                }
+            } else {
+                alert('Nenhum dado válido no relatório para copiar. Por favor, preencha o formulário.');
+            }
+        }
+
+        // Função de fallback para copiar texto para a área de transferência
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'Relatório copiado para a área de transferência!' : 'Não foi possível copiar o relatório.';
+                alert(msg + ' Por favor, copie manualmente o texto do relatório.');
+            } catch (err) {
+                console.error('Erro ao tentar copiar via execCommand: ', err);
+                alert('Não foi possível copiar o relatório. Por favor, selecione o texto no relatório e use a opção "Copiar".');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // NOVA FUNÇÃO: Limpa o formulário e o relatório
+        function clearFormAndReport() {
+            if (confirm('Tem certeza que deseja limpar todo o formulário e o relatório?')) {
+                const form = document.getElementById('customerForm');
+                form.reset(); // Reseta todos os campos do formulário para seus valores iniciais
+                
+                // Limpa o localStorage
+                localStorage.removeItem('clienteData');
+                localStorage.removeItem('clienteReport');
+
+                // Garante que as seções condicionais sejam ocultadas
+                toggleContractDetails();
+                togglePaymentInstallments();
+                toggleMigrationDetails();
+
+                // Atualiza o relatório para o estado inicial de "vazio"
+                document.getElementById('reportOutput').innerText = 'Preencha o formulário para gerar o relatório...';
+                document.getElementById('reportOutput').classList.add('empty');
+
+                alert('Formulário e relatório limpos com sucesso!');
+                // Foca no primeiro campo para melhor usabilidade
+                document.getElementById('nomeFantasia').focus();
+            }
+        }
+
+        // Carrega dados se existirem ao carregar a página e atribui listeners
+        window.onload = function() {
+            // Atribui os event listeners de máscara no carregamento da página
+            document.getElementById('celular').addEventListener('input', maskPhone);
+            document.getElementById('telefoneCobranca').addEventListener('input', maskPhone);
+            document.getElementById('telefoneSuporte').addEventListener('input', maskPhone);
+            document.getElementById('cnpj').addEventListener('input', maskCnpj);
+
+            const form = document.getElementById('customerForm');
+            
+            // Adiciona event listeners para todos os inputs, selects e textareas para atualizar o relatório
+            Array.from(form.elements).forEach(element => {
+                // Excluímos os campos de telefone e CNPJ aqui porque eles já chamam updateReport em suas máscaras
+                if (element.id !== 'celular' && element.id !== 'telefoneCobranca' && element.id !== 'telefoneSuporte' && element.id !== 'cnpj') {
+                    if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'email' || element.type === 'number')) {
+                        element.addEventListener('input', updateReport);
+                    } else if (element.tagName === 'SELECT' || element.type === 'radio' || element.type === 'checkbox') {
+                        element.addEventListener('change', updateReport);
+                    } else if (element.tagName === 'TEXTAREA') {
+                        element.addEventListener('input', updateReport);
+                    }
+                }
+            });
+
+            // Tenta carregar dados pré-existentes do localStorage
+            const savedData = localStorage.getItem('clienteData');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                for (const key in formData) {
+                    const element = form.elements[key];
+                    if (element) {
+                        if (Array.isArray(formData[key])) {
+                            formData[key].forEach(val => {
+                                const checkbox = document.querySelector(`input[name="${key}"][value="${val}"]`);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        } else if (element.type === 'radio') {
+                             const radio = document.querySelector(`input[name="${key}"][value="${formData[key]}"]`);
+                             if (radio) radio.checked = true;
+                        }
+                         else {
+                            element.value = formData[key];
+                        }
+                    }
+                }
+            }
+            // Chama updateReport uma vez ao carregar a página para garantir que o relatório inicial esteja preenchido
+            // ou exiba a mensagem de "vazio" se não houver dados.
+            updateReport(); 
+        };
+    </script>
+</body>
+</html>
