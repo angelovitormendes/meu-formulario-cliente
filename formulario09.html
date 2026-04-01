@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário de Cadastro de Cliente</title>
     <style>
-        /* Estilos Base e Reset */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f0f2f5;
             box-sizing: border-box;
-            -webkit-text-size-adjust: 100%;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -20,208 +18,181 @@
 
         .container {
             background-color: #ffffff;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             max-width: 750px;
-            margin: 20px auto;
+            margin: 10px auto;
             box-sizing: border-box;
             flex-grow: 1;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .container:focus-within {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         h2 {
             color: #333;
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-size: 1.8em;
             font-weight: 700;
-            letter-spacing: -0.5px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: bold;
             color: #444;
-            font-size: 0.98em;
+            font-size: 0.85em;
         }
 
         .form-row {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
         .form-group {
             flex: 1;
-            min-width: 200px;
+            min-width: 180px;
+            margin-bottom: 5px;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="number"],
-        select,
-        textarea {
+        .input-btn-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea {
             width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 18px;
+            padding: 10px;
+            margin-bottom: 12px;
             border: 1px solid #cdd;
-            border-radius: 8px;
+            border-radius: 6px;
             box-sizing: border-box;
-            font-size: 1.05em;
-            color: #333;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        input[type="number"]:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
-            outline: none;
-            background-color: #f9fcff;
-        }
-
-        .checkbox-group label {
-            display: inline-flex;
-            align-items: center;
-            font-weight: normal;
-            margin-bottom: 10px;
-            cursor: pointer;
             font-size: 0.95em;
-            color: #666;
+            color: #333;
         }
 
-        .message, .footer-message {
-            margin-bottom: 25px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            font-size: 0.9em;
-            line-height: 1.5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        .btn-search {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            min-width: 45px;
         }
+
         .message {
             background-color: #e7f3fe;
-            border-left: 8px solid #2196F3;
-            color: #333;
-        }
-        .footer-message {
-            background-color: #fff3cd;
-            border-left: 8px solid #ffc107;
-            color: #333;
-            margin-top: 25px;
-        }
-
-        #contractDetails, #migrationDetails {
-            display: none;
-            border: 1px solid #e0e0e0;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 10px;
-            background-color: #fefefe;
+            border-left: 5px solid #2196F3;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            margin-bottom: 15px;
         }
 
         #actionSection {
-            margin-top: 40px;
+            margin-top: 30px;
             border-top: 2px dashed #d0d0d0;
-            padding-top: 30px;
-            text-align: center;
+            padding-top: 20px;
         }
 
         #reportOutput {
             white-space: pre-wrap;
             background-color: #f8f8f8;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 8px;
             border: 1px solid #e0e0e0;
-            font-family: 'Roboto Mono', monospace;
-            color: #333;
-            max-height: 450px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            text-align: left;
-            font-size: 0.95em;
-            line-height: 1.6;
+            font-family: monospace;
+            font-size: 0.9em;
+            margin-bottom: 15px;
         }
 
         .action-buttons {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
+            gap: 10px;
         }
 
         .action-buttons button {
             flex: 1;
-            min-width: 180px;
-            padding: 15px 25px;
+            padding: 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1.1em;
             font-weight: 600;
-            transition: all 0.3s ease;
+            color: white;
         }
 
-        #sendToWhatsAppButton { background-color: #25d366; color: white; }
-        #copyReportButton { background-color: #007bff; color: white; }
-        #clearFormButton { background-color: #dc3545; color: white; }
+        #sendToWhatsAppButton { background-color: #25d366; }
+        #copyReportButton { background-color: #007bff; }
+        #clearFormButton { background-color: #dc3545; }
 
-        @media (max-width: 768px) {
-            .form-group { min-width: 100%; }
+        .modules-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
         }
+
+        .module-item {
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (max-width: 768px) { .form-group { min-width: 100%; } }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Formulário de Cadastro de Cliente</h2>
-        <div class="message">
-            <p><strong>Atenção:</strong> Todos os cadastros terão um prazo mínimo de 24 horas para serem feitos e o contrato enviado.</p>
-        </div>
+        <h2>Cadastro de Cliente</h2>
+        <div class="message"><strong>Atenção:</strong> Prazo de 24h para processamento.</div>
 
         <form id="customerForm">
+            <label for="cnpj">CNPJ:</label>
+            <div class="input-btn-group">
+                <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" required>
+                <button type="button" id="btnCnpj" class="btn-search" onclick="buscaCnpj()">🔍</button>
+            </div>
+
+            <label for="razaoSocial">Razão Social:</label>
+            <input type="text" id="razaoSocial" name="razaoSocial" required>
+
             <label for="nomeFantasia">Nome Fantasia:</label>
             <input type="text" id="nomeFantasia" name="nomeFantasia" required>
 
-            <label for="nomeResponsavel">Nome do Responsável da Empresa:</label>
+            <label for="nomeResponsavel">Nome do Responsável:</label>
             <input type="text" id="nomeResponsavel" name="nomeResponsavel" required>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="celular">Celular:</label>
-                    <input type="tel" id="celular" name="celular" placeholder="(XX) XXXXX-XXXX" required inputmode="numeric">
-                </div>
-                <div class="form-group">
-                    <label for="cnpj">CNPJ:</label>
-                    <input type="text" id="cnpj" name="cnpj" placeholder="XX.XXX.XXX/XXXX-XX" required inputmode="numeric">
+                    <input type="tel" id="celular" name="celular" placeholder="(XX) XXXXX-XXXX" required>
                 </div>
             </div>
 
-            <h3 style="margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Endereço Completo</h3>
-            
+            <h3 style="margin-top: 20px; font-size: 1.1em; border-bottom: 1px solid #eee;">Endereço</h3>
             <div class="form-row">
-                <div class="form-group" style="flex: 0 0 30%;">
+                <div class="form-group" style="flex: 0 0 40%;">
                     <label for="cep">CEP:</label>
-                    <input type="text" id="cep" name="cep" placeholder="00000-000" required maxlength="9">
+                    <div class="input-btn-group">
+                        <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+                        <button type="button" id="btnCep" class="btn-search" onclick="triggerCep()">🔍</button>
+                    </div>
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label for="logradouro">Logradouro (Rua/Av):</label>
+                    <label for="logradouro">Logradouro:</label>
                     <input type="text" id="logradouro" name="logradouro" required>
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group" style="flex: 0 0 20%;">
+                <div class="form-group" style="flex: 0 0 25%;">
                     <label for="numero">Número:</label>
                     <input type="text" id="numero" name="numero" required>
                 </div>
@@ -232,39 +203,18 @@
             </div>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label for="bairro">Bairro:</label>
-                    <input type="text" id="bairro" name="bairro" required>
-                </div>
-                <div class="form-group">
-                    <label for="cidade">Cidade:</label>
-                    <input type="text" id="cidade" name="cidade" required>
-                </div>
-                <div class="form-group" style="flex: 0 0 15%;">
-                    <label for="uf">UF:</label>
-                    <input type="text" id="uf" name="uf" required maxlength="2">
-                </div>
+                <div class="form-group"><label for="bairro">Bairro:</label><input type="text" id="bairro" name="bairro" required></div>
+                <div class="form-group"><label for="cidade">Cidade:</label><input type="text" id="cidade" name="cidade" required></div>
+                <div class="form-group" style="flex: 0 0 20%;"><label for="uf">UF:</label><input type="text" id="uf" name="uf" required maxlength="2"></div>
             </div>
 
             <label for="emailCobranca">E-mail de Cobrança:</label>
             <input type="email" id="emailCobranca" name="emailCobranca" required>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label for="telefoneCobranca">Telefone de Cobrança:</label>
-                    <input type="tel" id="telefoneCobranca" name="telefoneCobranca" placeholder="(XX) XXXXX-XXXX" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefoneSuporte">Telefone de Suporte:</label>
-                    <input type="tel" id="telefoneSuporte" name="telefoneSuporte" placeholder="(XX) XXXXX-XXXX" required>
-                </div>
+                <div class="form-group"><label for="telefoneCobranca">Tel. Cobrança:</label><input type="tel" id="telefoneCobranca" name="telefoneCobranca" required></div>
+                <div class="form-group"><label for="telefoneSuporte">Tel. Suporte:</label><input type="tel" id="telefoneSuporte" name="telefoneSuporte" required></div>
             </div>
-
-            <label for="emailEmpresa">E-mail da Empresa:</label>
-            <input type="email" id="emailEmpresa" name="emailEmpresa" required>
-
-            <label for="contabilidade">Contabilidade:</label>
-            <input type="text" id="contabilidade" name="contabilidade" required>
 
             <label for="regimeEmpresa">Regime da Empresa:</label>
             <select id="regimeEmpresa" name="regimeEmpresa" required>
@@ -276,10 +226,7 @@
             </select>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label for="valorContrato">Valor do Contrato:</label>
-                    <input type="text" id="valorContrato" name="valorContrato" required>
-                </div>
+                <div class="form-group"><label for="valorContrato">Valor do Contrato:</label><input type="text" id="valorContrato" name="valorContrato" required></div>
                 <div class="form-group">
                     <label for="tipoContrato">Tipo de Contrato:</label>
                     <select id="tipoContrato" name="tipoContrato" onchange="toggleContractDetails()" required>
@@ -290,42 +237,29 @@
                 </div>
             </div>
 
-            <div id="contractDetails">
-                <label for="formaPagamento">Forma de Pagamento (Anual):</label>
-                <select id="formaPagamento" name="formaPagamento" onchange="togglePaymentInstallments()">
+            <div id="contractDetails" style="display:none; border: 1px solid #eee; padding: 10px; margin-bottom: 15px;">
+                <label for="formaPagamento">Pagamento:</label>
+                <select id="formaPagamento" name="formaPagamento">
                     <option value="">Selecione</option>
                     <option value="Boleto">Boleto</option>
                     <option value="Cartao">Cartão</option>
                     <option value="Pix">Pix</option>
                 </select>
-
-                <label for="diaVencimento">Dia do Vencimento:</label>
+                <label for="diaVencimento">Dia Vencimento:</label>
                 <input type="number" id="diaVencimento" name="diaVencimento" min="1" max="31">
-
-                <div id="installments" style="display: none;">
-                    <label for="parcelasCartao">Quantas Parcelas (máximo 5x):</label>
-                    <input type="number" id="parcelasCartao" name="parcelasCartao" min="1" max="5">
-                </div>
             </div>
 
             <label>Tipo de Sistema:</label>
-            <div class="checkbox-group">
-                <input type="radio" id="fiscalSimples" name="tipoSistema" value="Fiscal Simples" required>
-                <label for="fiscalSimples">Fiscal Simples</label><br>
-                <input type="radio" id="fiscalNormal" name="tipoSistema" value="Fiscal Normal">
-                <label for="fiscalNormal">Fiscal Normal</label><br>
-                <input type="radio" id="fiscalMEI" name="tipoSistema" value="Fiscal MEI">
-                <label for="fiscalMEI">Fiscal MEI</label><br>
-                <input type="radio" id="gerencial" name="tipoSistema" value="Gerencial">
-                <label for="gerencial">Gerencial</label>
+            <div style="font-size: 0.9em; margin-bottom: 10px;">
+                <input type="radio" id="f1" name="tipoSistema" value="Fiscal Simples" onclick="renderModules('fiscal')"> <label for="f1">Fiscal Simples</label> |
+                <input type="radio" id="f2" name="tipoSistema" value="Fiscal Normal" onclick="renderModules('fiscal')"> <label for="f2">Fiscal Normal</label> |
+                <input type="radio" id="f3" name="tipoSistema" value="Fiscal MEI" onclick="renderModules('fiscal')"> <label for="f3">Fiscal MEI</label> |
+                <input type="radio" id="f4" name="tipoSistema" value="Gerencial" onclick="renderModules('gerencial')"> <label for="f4">Gerencial</label>
             </div>
 
-            <label>Módulos Adicionais:</label>
-            <div class="checkbox-group">
-                <input type="checkbox" name="modulos" value="NFC-e"> <label>NFC-e</label><br>
-                <input type="checkbox" name="modulos" value="NF-e"> <label>NF-e</label><br>
-                <input type="checkbox" name="modulos" value="NFS-e"> <label>NFS-e</label><br>
-                <input type="checkbox" name="modulos" value="Backup Online"> <label>Backup Online</label>
+            <div id="modulosSection" style="display: none;">
+                <label>Módulos Adicionais:</label>
+                <div id="modulesContainer" class="modules-container"></div>
             </div>
 
             <label for="migracao">Haverá Migração?</label>
@@ -335,158 +269,134 @@
                 <option value="Nao">Não</option>
             </select>
 
-            <div id="migrationDetails">
-                <label for="dadosMigracao">Detalhes da Migração:</label>
-                <textarea id="dadosMigracao" name="dadosMigracao" rows="4"></textarea>
-            </div>
+            <div id="migrationDetails" style="display:none;"><textarea id="dadosMigracao" name="dadosMigracao" rows="3"></textarea></div>
 
             <label for="observacao">Observação:</label>
-            <textarea id="observacao" name="observacao" rows="4"></textarea>
+            <textarea id="observacao" name="observacao" rows="3"></textarea>
         </form>
 
         <div id="actionSection">
-            <h3>Relatório Gerado:</h3>
-            <div id="reportOutput">Preencha o formulário para gerar o relatório...</div>
+            <div id="reportOutput">Relatório...</div>
             <div class="action-buttons">
                 <button type="button" id="sendToWhatsAppButton" onclick="sendToWhatsApp()">WhatsApp</button>
                 <button type="button" id="copyReportButton" onclick="copyReportToClipboard()">Copiar</button>
-                <button type="button" id="clearFormButton" onclick="clearFormAndReport()">Limpar Tudo</button>
+                <button type="button" id="clearFormButton" onclick="clearFormAndReport()">Limpar</button>
             </div>
-        </div>
-
-        <div class="footer-message">
-            <p><strong>* Observação:</strong> A falta de requisitos impedirá o cadastramento.</p>
         </div>
     </div>
 
     <script>
-        // Máscaras
-        function maskPhone(event) {
-            let v = event.target.value.replace(/\D/g, '');
-            if (v.length > 11) v = v.substring(0, 11);
-            if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-            else if (v.length > 2) v = v.replace(/^(\d{2})(\d)/, "($1) $2");
-            event.target.value = v;
+        const moduleOptions = {
+            fiscal: ["Orçamento", "Pedido", "NFC-e", "NF-e", "NFS-e", "Backup Online"],
+            gerencial: ["Orçamento", "Pedido", "Relatórios Personalizados", "Backup Online", "Controle Financeiro"]
+        };
+
+        function renderModules(type) {
+            const container = document.getElementById('modulesContainer');
+            const section = document.getElementById('modulosSection');
+            container.innerHTML = '';
+            section.style.display = 'block';
+
+            moduleOptions[type].forEach(mod => {
+                const div = document.createElement('div');
+                div.className = 'module-item';
+                div.innerHTML = `<input type="checkbox" name="modulos" value="${mod}" onchange="updateReport()"> <span>${mod}</span>`;
+                container.appendChild(div);
+            });
+            updateReport();
         }
 
-        function maskCnpj(event) {
-            let v = event.target.value.replace(/\D/g, '');
-            v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
-            event.target.value = v;
-        }
-
-        function maskCep(event) {
-            let v = event.target.value.replace(/\D/g, '');
-            v = v.replace(/^(\d{5})(\d{3})/, "$1-$2");
-            event.target.value = v;
-            if (v.length === 9) buscaCep(v);
-        }
-
-        // Busca de CEP Automática
-        async function buscaCep(cep) {
-            const cleanCep = cep.replace(/\D/g, '');
+        // --- CONSULTAS API ---
+        async function buscaCnpj() {
+            const btn = document.getElementById('btnCnpj');
+            const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+            if (cnpj.length !== 14) return alert("CNPJ incompleto");
+            btn.innerText = "⏳";
             try {
-                const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
-                const data = await response.json();
-                if (!data.erro) {
-                    document.getElementById('logradouro').value = data.logradouro;
-                    document.getElementById('bairro').value = data.bairro;
-                    document.getElementById('cidade').value = data.localidade;
-                    document.getElementById('uf').value = data.uf;
-                    document.getElementById('numero').focus();
-                    updateReport();
-                }
-            } catch (e) { console.error("Erro ao buscar CEP"); }
+                const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+                const data = await res.json();
+                document.getElementById('razaoSocial').value = data.razao_social || '';
+                document.getElementById('nomeFantasia').value = data.nome_fantasia || data.razao_social || '';
+                document.getElementById('logradouro').value = data.logradouro || '';
+                document.getElementById('bairro').value = data.bairro || '';
+                document.getElementById('cidade').value = data.municipio || '';
+                document.getElementById('uf').value = data.uf || '';
+                document.getElementById('cep').value = data.cep || '';
+                updateReport();
+            } catch (e) { alert("Erro ao consultar CNPJ"); }
+            finally { btn.innerText = "🔍"; }
         }
 
+        async function buscaCep(cepValue) {
+            try {
+                const res = await fetch(`https://brasilapi.com.br/api/cep/v1/${cepValue.replace(/\D/g, '')}`);
+                const data = await res.json();
+                document.getElementById('logradouro').value = data.street || '';
+                document.getElementById('bairro').value = data.neighborhood || '';
+                document.getElementById('cidade').value = data.city || '';
+                document.getElementById('uf').value = data.state || '';
+                updateReport();
+            } catch (e) { console.log("Erro CEP"); }
+        }
+
+        function triggerCep() { 
+            const val = document.getElementById('cep').value;
+            if(val.length >= 8) buscaCep(val);
+        }
+
+        // --- LÓGICA GERAL ---
         function toggleContractDetails() {
-            const tipo = document.getElementById('tipoContrato').value;
-            document.getElementById('contractDetails').style.display = tipo === 'Anual' ? 'block' : 'none';
-            updateReport();
-        }
-
-        function togglePaymentInstallments() {
-            const forma = document.getElementById('formaPagamento').value;
-            document.getElementById('installments').style.display = forma === 'Cartao' ? 'block' : 'none';
-            updateReport();
+            document.getElementById('contractDetails').style.display = document.getElementById('tipoContrato').value ? 'block' : 'none';
         }
 
         function toggleMigrationDetails() {
-            const migra = document.getElementById('migracao').value;
-            document.getElementById('migrationDetails').style.display = migra === 'Sim' ? 'block' : 'none';
-            updateReport();
+            document.getElementById('migrationDetails').style.display = document.getElementById('migracao').value === 'Sim' ? 'block' : 'none';
         }
 
         function updateReport() {
             const form = document.getElementById('customerForm');
             const data = new FormData(form);
-            let msg = "📝 *DADOS DO CADASTRO DE CLIENTE*\n\n";
+            let msg = "📝 *DADOS DO CADASTRO*\n\n";
+            msg += `*CNPJ:* ${data.get('cnpj') || '-'}\n*Razão:* ${data.get('razaoSocial')}\n*Fantasia:* ${data.get('nomeFantasia')}\n`;
+            msg += `*Celular:* ${data.get('celular')}\n*Sistema:* ${data.get('tipoSistema') || '-'}\n`;
             
-            msg += `*Empresa:* ${data.get('nomeFantasia') || '-'}\n`;
-            msg += `*Responsável:* ${data.get('nomeResponsavel') || '-'}\n`;
-            msg += `*CNPJ:* ${data.get('cnpj') || '-'}\n`;
-            msg += `*Celular:* ${data.get('celular') || '-'}\n\n`;
-            
-            msg += `📍 *ENDEREÇO:*\n`;
-            msg += `${data.get('logradouro')}, ${data.get('numero')}\n`;
-            msg += `${data.get('bairro')} - ${data.get('cidade')}/${data.get('uf')}\n`;
-            msg += `CEP: ${data.get('cep')}\n`;
-            if(data.get('complemento')) msg += `Comp: ${data.get('complemento')}\n`;
-            
-            msg += `\n*Financeiro:* ${data.get('emailCobranca')}\n`;
-            msg += `*Regime:* ${data.get('regimeEmpresa')}\n`;
-            msg += `*Contrato:* ${data.get('tipoContrato')} - R$ ${data.get('valorContrato')}\n`;
-            
-            if(data.get('tipoContrato') === 'Anual') {
-                msg += `*Pagamento:* ${data.get('formaPagamento')} (Dia ${data.get('diaVencimento')})\n`;
-            }
-
-            msg += `\n*Sistema:* ${data.get('tipoSistema')}\n`;
-            
-            const modulos = [];
-            document.querySelectorAll('input[name="modulos"]:checked').forEach(i => modulos.push(i.value));
-            msg += `*Módulos:* ${modulos.join(', ') || 'Nenhum'}\n`;
-            
-            msg += `\n*Migração:* ${data.get('migracao')}\n`;
+            const mods = [];
+            document.querySelectorAll('input[name="modulos"]:checked').forEach(i => mods.push(i.value));
+            msg += `*Módulos:* ${mods.join(', ') || 'Nenhum'}\n`;
             msg += `*Obs:* ${data.get('observacao') || 'Nenhuma'}`;
-
+            
             document.getElementById('reportOutput').innerText = msg;
             localStorage.setItem('tempReport', msg);
         }
 
+        // Máscaras e Listeners
+        window.onload = () => {
+            document.getElementById('cnpj').oninput = (e) => {
+                let v = e.target.value.replace(/\D/g, '');
+                v = v.replace(/^(\d{2})(\d)/, "$1.$2").replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3").replace(/\.(\d{3})(\d)/, ".$1/$2").replace(/(\d{4})(\d)/, "$1-$2");
+                e.target.value = v;
+            };
+            document.getElementById('cep').oninput = (e) => {
+                let v = e.target.value.replace(/\D/g, '');
+                v = v.replace(/^(\d{5})(\d)/, "$1-$2");
+                e.target.value = v;
+                if(v.length === 9) buscaCep(v);
+            };
+            document.querySelectorAll('input, select, textarea').forEach(el => el.oninput = updateReport);
+        };
+
         function sendToWhatsApp() {
             const report = localStorage.getItem('tempReport');
-            if(!document.getElementById('customerForm').checkValidity()) {
-                document.getElementById('customerForm').reportValidity();
-                return;
-            }
             window.open(`https://wa.me/?text=${encodeURIComponent(report)}`, '_blank');
         }
 
         function copyReportToClipboard() {
-            const report = document.getElementById('reportOutput').innerText;
-            navigator.clipboard.writeText(report).then(() => alert('Copiado!'));
+            navigator.clipboard.writeText(document.getElementById('reportOutput').innerText).then(() => alert('Copiado!'));
         }
 
         function clearFormAndReport() {
-            if(confirm('Limpar tudo?')) {
-                document.getElementById('customerForm').reset();
-                updateReport();
-            }
+            if(confirm('Limpar?')) { document.getElementById('customerForm').reset(); updateReport(); document.getElementById('modulosSection').style.display='none'; }
         }
-
-        // Listeners
-        window.onload = () => {
-            document.getElementById('celular').addEventListener('input', maskPhone);
-            document.getElementById('telefoneCobranca').addEventListener('input', maskPhone);
-            document.getElementById('telefoneSuporte').addEventListener('input', maskPhone);
-            document.getElementById('cnpj').addEventListener('input', maskCnpj);
-            document.getElementById('cep').addEventListener('input', maskCep);
-            
-            document.querySelectorAll('input, select, textarea').forEach(el => {
-                el.addEventListener('input', updateReport);
-            });
-        };
     </script>
 </body>
 </html>
