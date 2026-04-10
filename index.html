@@ -66,8 +66,8 @@
 
         .modules-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
             background: #f9f9f9;
             padding: 15px;
             border-radius: 8px;
@@ -76,15 +76,20 @@
         .module-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: white;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #dfe4ea;
             cursor: pointer;
+            transition: background-color 0.2s;
             font-size: 0.85em;
+            color: #444;
+            line-height: 1.2;
         }
-        .module-item input { width: 16px; height: 16px; margin: 0; }
+        
+        .module-item:hover { background-color: #f1f2f6; }
+        .module-item input { width: 15px; height: 15px; margin: 0; cursor: pointer; accent-color: #007bff; }
 
         #reportOutput {
             white-space: pre-wrap;
@@ -136,9 +141,12 @@
 
         <h3>Endereço Completo</h3>
         <div class="form-row">
-            <div class="form-group" style="flex: 0 0 30%;">
+            <div class="form-group" style="flex: 0 0 40%;">
                 <label>CEP:</label>
-                <input type="text" id="cep" name="cep" placeholder="00000-000">
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="cep" name="cep" placeholder="00000-000">
+                    <button type="button" class="btn-search" onclick="buscaCep()">🔍</button>
+                </div>
             </div>
             <div class="form-group">
                 <label>Logradouro:</label>
@@ -270,29 +278,59 @@
 <script>
     const moduleOptions = {
         fiscal: [
-            "004 NFe (Nota Fiscal Eletrônica)",
-            "005 NFCe (Nota Fiscal de Consumidor)",
-            "016 NFSe (Nota Fiscal de Serviço Eletrônica)",
-            "017 CTe (Conhecimento de Transporte Eletrônico)",
-            "018 MDFe (Manifesto Eletrônico de Documentos Fiscais)",
-            "010 Emissão de Boleto Bancario",
-            "011 Ferramenta de emissão de Etiquetas",
-            "013 Gerencimento de Ordem de Serviço",
-            "015 Backup On-Line (Nuvens)",
-            "031 GERENCIAMENTO DE LOCAÇOES",
-            "038 CONTROLE DE ENTREGAS",
-            "039 SISTEMA DE VENDAS MOBILE DEMANDER",
-            "049 DEMANDER MODULO DE COBRANÇA",
-            "040 INTEGRAÇÃO API ECOMERCENET",
-            "043 FERRAMENTA DE COTAÇÕES",
-            "045 SISTEMA DE COMANDAS",
-            "048 PDV M3SOFT (FRENTE DE CAIXA)",
-            "050 SISTEMA DE MENSALIDADE",
-            "055 SISTEMA EM NUVENS",
-            "056 DASHBOARD POWER BI"
+            "004 NFe (Nota Fiscal Eletrônica)", "005 NFCe (Nota Fiscal de Consumidor)",
+            "016 NFSe (Nota Fiscal de Serviço)", "017 CTe (Conhecimento de Transporte)",
+            "018 MDFe (Manifesto Eletrônico)", "010 Emissão de Boleto Bancario",
+            "011 Ferramenta de etiquetas", "013 Gerencimento de O.S",
+            "015 Backup On-Line (Nuvens)", "031 GERENCIAMENTO DE LOCAÇOES",
+            "038 CONTROLE DE ENTREGAS", "039 SISTEMA VENDAS MOBILE",
+            "049 DEMANDER MODULO COBRANÇA", "040 INTEGRAÇÃO API ECOMERCENET",
+            "043 FERRAMENTA DE COTAÇÕES", "045 SISTEMA DE COMANDAS",
+            "048 PDV M3SOFT (FRENTE CAIXA)", "050 SISTEMA DE MENSALIDADE",
+            "055 SISTEMA EM NUVENS", "056 DASHBOARD POWER BI"
         ],
-        gerencial: ["Estoque", "Financeiro", "Orçamento", "Pedido", "Relatórios Geren.", "Backup Online", "App Vendas", "Controle Frota"]
+        gerencial: [
+            "010 Emissão de Boleto Bancario", "011 Ferramenta de etiquetas",
+            "013 Gerencimento de O.S", "015 Backup On-Line (Nuvens)",
+            "031 GERENCIAMENTO DE LOCAÇOES", "038 CONTROLE DE ENTREGAS",
+            "039 SISTEMA VENDAS MOBILE", "049 DEMANDER MODULO COBRANÇA",
+            "040 INTEGRAÇÃO API ECOMERCENET", "043 FERRAMENTA DE COTAÇÕES",
+            "045 SISTEMA DE COMANDAS", "050 SISTEMA DE MENSALIDADE",
+            "055 SISTEMA EM NUVENS", "056 DASHBOARD POWER BI"
+        ]
     };
+
+    async function buscaCep() {
+        const cep = document.getElementById('cep').value.replace(/\D/g, '');
+        if (cep.length !== 8) return alert("CEP inválido");
+        try {
+            const res = await fetch(`https://brasilapi.com.br/api/cep/v1/${cep}`);
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            document.getElementById('logradouro').value = data.street || '';
+            document.getElementById('bairro').value = data.neighborhood || '';
+            document.getElementById('cidade').value = data.city || '';
+            document.getElementById('uf').value = data.state || '';
+            updateReport();
+        } catch (e) { alert("Erro ao buscar CEP. Verifique se o número está correto."); }
+    }
+
+    async function buscaCnpj() {
+        const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+        if (cnpj.length !== 14) return alert("CNPJ inválido");
+        try {
+            const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+            const data = await res.json();
+            document.getElementById('razaoSocial').value = data.razao_social || '';
+            document.getElementById('nomeFantasia').value = data.nome_fantasia || '';
+            document.getElementById('logradouro').value = data.logradouro || '';
+            document.getElementById('bairro').value = data.bairro || '';
+            document.getElementById('cidade').value = data.municipio || '';
+            document.getElementById('uf').value = data.uf || '';
+            document.getElementById('cep').value = data.cep || '';
+            updateReport();
+        } catch (e) { alert("Erro ao buscar CNPJ"); }
+    }
 
     function selectSistema(element, nome, tipo) {
         document.querySelectorAll('.sistema-option').forEach(opt => opt.classList.remove('active'));
@@ -317,23 +355,6 @@
             container.appendChild(div);
         });
         updateReport();
-    }
-
-    async function buscaCnpj() {
-        const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
-        if (cnpj.length !== 14) return alert("CNPJ inválido");
-        try {
-            const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
-            const data = await res.json();
-            document.getElementById('razaoSocial').value = data.razao_social || '';
-            document.getElementById('nomeFantasia').value = data.nome_fantasia || '';
-            document.getElementById('logradouro').value = data.logradouro || '';
-            document.getElementById('bairro').value = data.bairro || '';
-            document.getElementById('cidade').value = data.municipio || '';
-            document.getElementById('uf').value = data.uf || '';
-            document.getElementById('cep').value = data.cep || '';
-            updateReport();
-        } catch (e) { alert("Erro ao buscar CNPJ"); }
     }
 
     function toggleContractDetails() {
@@ -381,7 +402,7 @@
 
         msg += "*[SISTEMA]*\n";
         msg += `• Tipo: ${data.get('tipoSistema') || '-'}\n`;
-        msg += `• Módulos: ${mods.join(', ') || 'Somente Base'}\n\n`;
+        msg += `• Módulos: ${mods.join(', ') || 'Nenhum módulo selecionado'}\n\n`;
 
         msg += "*[OBSERVAÇÕES]*\n";
         msg += `• Migração: ${data.get('migracao')}\n`;
