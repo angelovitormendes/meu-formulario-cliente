@@ -203,7 +203,7 @@
         <div class="form-row">
             <div class="form-group"><label>Valor Mensal (R$):</label><input type="text" id="valorContrato" name="valorContrato" placeholder="0,00"></div>
             <div class="form-group">
-                <label>Recorrência:</label>
+                <label>Tipo de Pagamento:</label>
                 <select id="tipoContrato" name="tipoContrato" onchange="toggleContractDetails()">
                     <option value="">Selecione</option>
                     <option value="Anual">Anual</option>
@@ -309,10 +309,11 @@
             const data = await res.json();
             document.getElementById('logradouro').value = data.street || '';
             document.getElementById('bairro').value = data.neighborhood || '';
+            document.getElementById('city').value = data.city || ''; // Ajustado para 'city' conforme API
             document.getElementById('cidade').value = data.city || '';
             document.getElementById('uf').value = data.state || '';
             updateReport();
-        } catch (e) { alert("Erro ao buscar CEP. Verifique se o número está correto."); }
+        } catch (e) { alert("Erro ao buscar CEP."); }
     }
 
     async function buscaCnpj() {
@@ -393,9 +394,9 @@
         msg += `• Tel. Suporte: ${data.get('telefoneSuporte') || '-'}\n`;
         msg += `• Regime: ${data.get('regimeEmpresa') || '-'}\n`;
         msg += `• Valor: R$ ${data.get('valorContrato') || '0,00'}\n`;
-        msg += `• Recorrência: ${data.get('tipoContrato') || '-'}\n`;
+        msg += `• Tipo de Pagamento: ${data.get('tipoContrato') || '-'}\n`;
         if(data.get('tipoContrato')) {
-            msg += `• Pagamento: ${data.get('formaPagamento')}\n`;
+            msg += `• Meio: ${data.get('formaPagamento')}\n`;
             msg += `• Vencimento: Dia ${data.get('diaVencimento')}\n`;
         }
         msg += "\n";
