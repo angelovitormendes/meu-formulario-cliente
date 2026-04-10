@@ -50,7 +50,6 @@
             height: 38px;
         }
 
-        /* Estilo dos Seletores de Sistema (Melhoria Solicitada) */
         .sistema-selector { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .sistema-option {
             background: #f8f9fa;
@@ -65,10 +64,9 @@
         }
         .sistema-option.active { background: #007bff; color: white; border-color: #0056b3; }
 
-        /* Estilo dos Módulos Organizados (Melhoria Solicitada) */
         .modules-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 10px;
             background: #f9f9f9;
             padding: 15px;
@@ -84,6 +82,7 @@
             border-radius: 5px;
             border: 1px solid #ddd;
             cursor: pointer;
+            font-size: 0.85em;
         }
         .module-item input { width: 16px; height: 16px; margin: 0; }
 
@@ -270,7 +269,28 @@
 
 <script>
     const moduleOptions = {
-        fiscal: ["NFC-e", "NF-e", "NFS-e", "Estoque", "Financeiro", "Orçamento", "Pedido", "Backup Online", "App Vendas", "MD-e"],
+        fiscal: [
+            "004 NFe (Nota Fiscal Eletrônica)",
+            "005 NFCe (Nota Fiscal de Consumidor)",
+            "016 NFSe (Nota Fiscal de Serviço Eletrônica)",
+            "017 CTe (Conhecimento de Transporte Eletrônico)",
+            "018 MDFe (Manifesto Eletrônico de Documentos Fiscais)",
+            "010 Emissão de Boleto Bancario",
+            "011 Ferramenta de emissão de Etiquetas",
+            "013 Gerencimento de Ordem de Serviço",
+            "015 Backup On-Line (Nuvens)",
+            "031 GERENCIAMENTO DE LOCAÇOES",
+            "038 CONTROLE DE ENTREGAS",
+            "039 SISTEMA DE VENDAS MOBILE DEMANDER",
+            "049 DEMANDER MODULO DE COBRANÇA",
+            "040 INTEGRAÇÃO API ECOMERCENET",
+            "043 FERRAMENTA DE COTAÇÕES",
+            "045 SISTEMA DE COMANDAS",
+            "048 PDV M3SOFT (FRENTE DE CAIXA)",
+            "050 SISTEMA DE MENSALIDADE",
+            "055 SISTEMA EM NUVENS",
+            "056 DASHBOARD POWER BI"
+        ],
         gerencial: ["Estoque", "Financeiro", "Orçamento", "Pedido", "Relatórios Geren.", "Backup Online", "App Vendas", "Controle Frota"]
     };
 
@@ -372,7 +392,9 @@
     }
 
     const maskTel = (id) => {
-        document.getElementById(id).oninput = (e) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.oninput = (e) => {
             let v = e.target.value.replace(/\D/g, '');
             v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
             v = v.replace(/(\d)(\d{4})$/, "$1-$2");
